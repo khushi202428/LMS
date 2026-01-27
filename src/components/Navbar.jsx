@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { navbarStyles } from "../assets/dummyStyles";
 import logo from "../assets/logo.png";
-import { BookMarked, BookOpen, Home, Users, Phone } from "lucide-react";
-
+import { BookMarked, BookOpen, Home, Users, Phone ,Menu,X} from "lucide-react";
+import { useAuth, useClerk, UserButton, useUser } from "@clerk/clerk-react";
 const navItems = [
   { name: "Home", icon: Home, href: "/" },
   { name: "Courses", icon: BookOpen, href: "/courses" },
@@ -11,23 +11,28 @@ const navItems = [
   { name: "Faculty", icon: Users, href: "/faculty" },
   { name: "Contact", icon: Phone, href: "/contact" },
 ];
-
 const Navbar = () => {
+  // for clerk
+  const { openSignUp } = useClerk();
+  const { isSignedIn } = useUser();
+  const { getToken } = useAuth();
+  //for mobile toggle
+  const [isOpen, setIsOpen] = useState(false);
+  const [lastScrolly, setLastScrolly] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
-
+  const menuRef = useRef(null);
+  const isLoggedIn = isSignedIn && Boolean(localStorage.getItem("token"));
   const desktopLinkClass = (isActive) =>
     `${navbarStyles.desktopNavItem} ${
       isActive ? navbarStyles.desktopNavItemActive : ""
     }`;
-
   const mobileLinkClass = (isActive) =>
     `${navbarStyles.mobileMenuItem} ${
       isActive
         ? navbarStyles.mobileMenuItemActive
         : navbarStyles.mobileMenuItemHover
     }`;
-
   return (
     <nav
       className={`
@@ -56,28 +61,73 @@ const Navbar = () => {
                     key={item.name}
                     to={item.href}
                     end={item.href === "/"}
-                    className={({ isActive }) =>
-                      desktopLinkClass(isActive)
-                    }
+                    className={({ isActive }) => desktopLinkClass(isActive)}
                   >
                     <div className="flex items-center space-x-2">
-                      <Icon
-                        size={16}
-                        className={navbarStyles.desktopNavIcon}
-                      />
-                      <span className={navbarStyles.desktopNavItemText}>{item.name}</span>
+                      <Icon size={16} className={navbarStyles.desktopNavIcon} />
+                      <span className={navbarStyles.desktopNavItemText}>
+                        {item.name}
+                      </span>
                     </div>
                   </NavLink>
                 );
               })}
             </div>
           </div>
-{/*right side*/}
-<div className={navbarStyles.authContainer}>
-
-</div>
-
-
+          {/*right side*/}
+          <div className={navbarStyles.authContainer}>
+            {!isSignedIn ? (
+              <button
+                type="button"
+                onClick={() => openSignUp({})}
+                className={
+                  navbarStyles.createAccountButton ?? navbarStyles.loginButton
+                }
+              >
+                <span>Create Account</span>
+              </button>
+            ) : (
+              <div className="flex items-center">
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            )}
+            {/*toggle*/}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={navbarStyles.mobileMenuButton}
+            >
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+        {/* Mobile Navigation */}
+        <div
+          ref={menuRef}
+          className={`${navbarStyles.mobileMenu} ${isOpen ? navbarStyles.mobileMenuOpen : navbarStyles.mobileMenuClosed}`}
+        >
+          <div className={navbarStyles.mobileMenuContainer}>
+            <div className={navbarStyles.mobileMenuItems}>
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.name}
+                    to={item.href}
+                    end={item.href === "/"}
+                    className={({ isActive }) => mobileLinkClass(isActive)}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <div className={navbarStyles.mobileMenuIconContainer}>
+                      <Icon size={18} className={navbarStyles.mobileMenuIcon} />
+                    </div>
+                    <span className={navbarStyles.mobileMenuText}>
+                      {item.name}
+                    </span>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </nav>
