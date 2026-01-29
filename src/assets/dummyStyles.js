@@ -2,7 +2,13 @@
 
 export const bannerStyles = {
   // Layout and container styles
-  container: "relative md:pt-25 xl:pt-25 pt-21 sm:min-h-[520px] md:min-h-[560px] lg:min-h-[600px] pt-6 sm:pt-8 lg:pt-25 flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-8 bg-gradient-to-br from-blue-50 via-white to-purple-50 animate-gradient-bg rounded-3xl",
+bannerContainer: "relative min-h-[500px] mt-12 sm:mt-16 lg:mt-20 px-4 flex items-center justify-center",
+
+// Main content
+mainContent: "max-w-4xl w-full mx-auto bg-white/70 backdrop-blur-lg rounded-[45px] shadow-2xl border border-white/40 relative z-10 px-10 py-10 sm:py-12 animate-fade-in",
+
+// Left content
+leftContent: "flex flex-col items-start text-left space-y-2 sm:space-y-3",
   
   // Floating icons wrapper
   floatingIconsWrapper: "absolute inset-0 pointer-events-none overflow-visible z-0",
@@ -10,18 +16,14 @@ export const bannerStyles = {
   // Floating icon base styles
   floatingIcon: "absolute animate-float max-w-none pb-4 md:-ml-11.5 md:mt-2 lg:-mr-12 lg:-ml-13 xl:-mr-0 xl:-ml-0 xl:mt-5 xl:w-12 xl:h-40 md:-mr-12 lg:-mr-0 xl:-mr-0 pointer-events-none drop-shadow-xl glow-icon transform transition-transform duration-300 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12",
   
-  // Main content
-  mainContent: "max-w-6xl w-full mx-auto bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 relative z-10 p-6 sm:p-8 lg:p-12 animate-fade-in",
   
   // Grid layout
   grid: "grid grid-cols-1 md:grid-cols-2 gap-8 items-center",
   
-  // Left content
-  leftContent: "space-y-5 sm:space-y-6",
   
   // Badge
-  badge: "inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold animate-fade-in font-cursive",
-  badgeIcon: "w-4 h-4 text-blue-500",
+ 
+  badge: "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-xs sm:text-sm font-medium mt-0 mb-2",
   
   // Heading
   heading: "text-3xl sm:text-4xl lg:text-5xl font-cursive font-heading uppercase tracking-wider leading-tight",
